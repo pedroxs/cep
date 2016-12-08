@@ -1,0 +1,13 @@
+version: '2'
+services:
+    cep-postgres:
+        container_name: cep-postgres
+        image: postgres:9.6.1-alpine
+        # volumes:
+        #     - ~/volumes/cep-service/db/:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=cep
+            - POSTGRES_USER=cep_user
+            - POSTGRES_PASSWORD=cep_pwd
+        ports:
+            - 5432:5432

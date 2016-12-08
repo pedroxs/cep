@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: cep-service
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+# Common config for actuators
+management:
+  context-path: /management
+
+# /info endpoint
+info:
+  build:
+    artifact: @project.artifactId@
+    name: @project.name@
+    description: @project.description@
+    version: @project.version@
+    time: @build.timestamp@
+
+# Set logging level.
+logging:
+  level:
+    root: info
+
+# bypass security for /cep endpoint
+security:
+  ignored: /cep/**
+  # aha! =)
+  user:
+    name: cep
+    password: cep
+
+---
+# Production
+spring:
+  profiles: production
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cep
+    username: cep_user
+    password: cep_pwd
+    driver-class-name: org.postgresql.Driver
+    tomcat:
+      max-active: 10
+      initial-size: 5
+      max-idle: 5
+      min-idle: 1
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: SELECT 1
+      time-between-eviction-runs-millis: 5000
+      min-evictable-idle-time-millis: 60000
+      # SQL Pool Sizing study
+      # https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing

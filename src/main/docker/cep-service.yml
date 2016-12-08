@@ -1,0 +1,19 @@
+version: '2'
+services:
+  cep-service:
+    image: openjdk:8u111-jre-alpine
+    external_links:
+      - cep-postgres:postgres
+    volumes:
+      - ./../../../target/:/opt/app/
+    command: sh -c 'sleep 10 && java -jar /opt/app/cep.jar'
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/cep
+    ports:
+      - 8080:8080
+
+  review-service-mysql:
+    extends:
+      file: postgres.yml
+      service: cep-postgres
